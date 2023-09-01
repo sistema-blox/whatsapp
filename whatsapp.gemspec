@@ -9,11 +9,11 @@ require "whats/version"
 Gem::Specification.new do |spec|
   spec.name        = "whatsapp"
   spec.version     = Whats::VERSION
-  spec.authors     = ["Bruno Soares", "GetNinjas"]
-  spec.email       = ["bruno@bsoares.com", "tech@getninjas.com.br"]
+  spec.authors     = ["Bruno Soares", "GetNinjas", "Raniery Sales Vieira", "Bruno Berchielli"]
+  spec.email       = ["bruno@bsoares.com", "tech@getninjas.com.br", "raniery.sales@blox.education", "bruno@blox.education"]
   spec.summary     = "WhatsApp Enterprise API interface."
   spec.description = "A Ruby interface to WhatsApp Enterprise API."
-  spec.homepage    = "https://github.com/getninjas/whatsapp"
+  spec.homepage    = "https://github.com/sistema-blox/whatsapp"
   spec.license     = "MIT"
 
   spec.files         = Dir["lib/**/*"]
