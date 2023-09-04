@@ -7,9 +7,9 @@ module WebmockHelper
 
   BASE_PATH          = "http://test.local"
   CHECK_CONTACTS_URL = "#{BASE_PATH}#{Whats::Actions::CheckContacts::PATH}"
-  SEND_MESSAGE_URL   = "#{BASE_PATH}#{Whats::Actions::SendMessage::PATH}"
+  SEND_MESSAGE_URL   = "#{BASE_PATH}#{Whats::Actions::SendMessage::ENDPOINT}"
   LOGIN_URL          = "#{BASE_PATH}#{Whats::Actions::Login::PATH}"
-  MARK_READ_URL      = "#{BASE_PATH}#{Whats::Actions::MarkRead::PATH}"
+  MARK_READ_URL      = "#{BASE_PATH}#{Whats::Actions::MarkRead::ENDPOINT}"
 
   def stub_check_contacts_with_valid_number(contact, wa_id)
     stub_default(

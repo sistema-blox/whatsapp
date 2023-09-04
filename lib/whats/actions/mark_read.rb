@@ -3,16 +3,18 @@
 module Whats
   module Actions
     class MarkRead
-      PATH = "/v17.0/%{phone_id}/messages"
+      ENDPOINT = "/v17.0/%{phone_id}/messages"
 
       def initialize(client, message_id, phone_id)
         @client = client
         @message_id  = message_id
-        @path   = URI::DEFAULT_PARSER.escape(PATH % {phone_id: phone_id})
+        @path   = URI::DEFAULT_PARSER.escape(ENDPOINT % {phone_id: phone_id})
       end
 
+      attr_reader :path
+
       def call
-        client.request @path, payload
+        client.request path, payload
       end
 
       private

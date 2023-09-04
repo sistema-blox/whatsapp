@@ -30,12 +30,14 @@ module Whats
       result[number]
     end
 
+    attr_reader :phone_id
+
     def send_message(to, type, body)
-      Actions::SendMessage.new(client, to, @phone_id, type, body).call
+      Actions::SendMessage.new(client, to, phone_id, type, body).call
     end
 
     def mark_read(message_id)
-      Actions::MarkRead.new(client, message_id, @phone_id).call
+      Actions::MarkRead.new(client, message_id, phone_id).call
     end
 
     private

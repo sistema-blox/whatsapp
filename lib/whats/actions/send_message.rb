@@ -3,7 +3,7 @@
 module Whats
   module Actions
     class SendMessage
-      PATH = "/v17.0/%{phone_id}/messages"
+      ENDPOINT = "/v17.0/%{phone_id}/messages"
 
       COMMON_PAYLOAD = {
         messaging_product: 'whatsapp',
@@ -15,11 +15,13 @@ module Whats
         @wa_id  = wa_id
         @body   = body
         @type   = type
-        @path   = URI::DEFAULT_PARSER.escape(PATH % {phone_id: phone_id})
+        @path   = URI::DEFAULT_PARSER.escape(ENDPOINT % {phone_id: phone_id})
       end
 
+      attr_reader :path
+
       def call
-        client.request @path, payload
+        client.request path, payload
       end
 
       private
