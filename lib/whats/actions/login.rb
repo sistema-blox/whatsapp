@@ -1,28 +1,24 @@
 # frozen_string_literal: true
 
-require "base64"
-
 module Whats
   module Actions
     class Login
       PATH = "/v1/users/login"
 
-      def initialize
-        @user = Whats.configuration.user
-        @password = Whats.configuration.password
-        @client = Whats::Client.new(encoded_auth, :basic)
+      def initialize(client)
+        @client = client
+        @token = nil
+        @expires_after = nil
       end
 
       def call
-        client.request(PATH)
+        response = client.request(PATH)
+        extract_atributes(response) unless @token
+        @token
       end
 
       def token
-        return @token if valid?
-
-        extract_atributes call
-
-        @token
+        call
       end
 
       private
@@ -32,10 +28,6 @@ module Whats
       def extract_atributes(response)
         @token = response["users"].first["token"]
         @expires_after = response["users"].first["expires_after"]
-      end
-
-      def encoded_auth
-        Base64.encode64("#{@user}:#{@password}").chomp
       end
 
       def valid?

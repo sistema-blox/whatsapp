@@ -2,12 +2,14 @@
 
 require "whats/actions/check_contacts"
 require "whats/actions/send_message"
-require "whats/actions/send_hsm_message"
+require "whats/actions/mark_read"
 
 module Whats
   class Api
     def initialize
       @base_path = Whats.configuration.base_path
+      @token = Whats.configuration.token
+      @phone_id = Whats.configuration.phone_id
     end
 
     def check_contacts(numbers)
@@ -28,19 +30,14 @@ module Whats
       result[number]
     end
 
-    def send_message(username, body)
-      Actions::SendMessage.new(client, username, body).call
+    attr_reader :phone_id
+
+    def send_message(to, type, body)
+      Actions::SendMessage.new(client, to, phone_id, type, body).call
     end
 
-    def send_hsm_message(username, namespace, element_name, language, params)
-      Actions::SendHsmMessage.new(
-        client,
-        username,
-        namespace,
-        element_name,
-        language,
-        params
-      ).call
+    def mark_read(message_id)
+      Actions::MarkRead.new(client, message_id, phone_id).call
     end
 
     private
@@ -48,7 +45,7 @@ module Whats
     attr_reader :base_path
 
     def client
-      @client ||= Whats::Client.new
+      @client ||= Whats::Client.new(@token)
     end
   end
 end

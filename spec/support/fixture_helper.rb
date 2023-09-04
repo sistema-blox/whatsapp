@@ -37,8 +37,8 @@ module FixtureHelper
     )
   end
 
-  def send_message_request(username:, body:)
-    load_json("send_message_request", USERNAME: username, BODY: body)
+  def send_message_request(wa_id:, body:)
+    load_json("send_message_request", WA_ID: wa_id, BODY: body)
   end
 
   def send_hsm_message_request(username:, namespace:, element_name:, language:, params: {})
@@ -66,6 +66,18 @@ module FixtureHelper
 
   def message_sent_with_empty_body_response
     load_json("message_sent_with_empty_body_response")
+  end
+
+  def mark_read_request(message_id = '')
+    load_json("mark_read_request", MESSAGE_ID: message_id)
+  end
+
+  def mark_read_response
+    load_json("mark_read_response")
+  end
+
+  def mark_read_invalid_response
+    load_json("mark_read_invalid_response")
   end
 
   def login_response(token)
