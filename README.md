@@ -78,32 +78,27 @@ whats.send_message("5511942424242", "text", "Message goes here.")
 
 # To send a template message
 body = {
- "messaging_product": "whatsapp",
- "recipient_type": "individual",
- "to": "9999999999999",
- "type": "interactive",
- "interactive": {
   "type": "list",
   "header": {
    "type": "text",
-   "text": "books"
+   "text": "title"
   },
   "body": {
-   "text": "Select genre"
+   "text": "body"
   },
   "action": {
-   "button": "genres",
+   "button": "button title",
    "sections": [
     {
-     "title": "genres",
+     "title": "section title",
      "rows": [
       {
-       "id": "123",
-       "title": "Terror"
+       "id": "1",
+       "title": "button 1"
       },
       {
-       "id": "456",
-       "title": "fantasy"
+       "id": "2",
+       "title": "button 2"
       },
       ...
      ]
@@ -111,7 +106,6 @@ body = {
    ]
   }
  }
-}
 
 whats.send_message("5511942424242", "interactive", body)
 
