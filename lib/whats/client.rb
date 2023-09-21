@@ -15,10 +15,12 @@ module Whats
 
       conn = Faraday.new(url: full_path, headers: headers)
       response = conn.post { |request| request.body = body(payload) }
+      
+      body = JSON.parse(response.body)
 
-      raise Whats::Errors::RequestError.new("API request error.", response) unless response.success?
+      raise Whats::Errors::RequestError.new("API request error.", body) unless response.success?
 
-      JSON.parse(response.body)
+      body
     end
 
     private
