@@ -4,6 +4,7 @@ module Whats
       attr_reader :client, :from_phone_number_id, :path, :payload
 
       ENDPOINT = "/v18.0/%{from_phone_number_id}/whatsapp_business_profile"
+      ACCEPTED_PARAMS = [:websites, :address, :description, :email, :about]
 
       def initialize(client:, from_phone_number_id:, payload:)
         @client = client
@@ -28,7 +29,7 @@ module Whats
 
       def validate_parameters
         raise ArgumentError, "req_payload must be a Hash" unless payload.instance_of?(Hash)
-        raise NotImplementedError, "Unsupported parameter(s) in payload: #{payload.keys - [:websites, :address, :description, :email]}" unless payload.keys.all? { |k| [:websites, :address, :description, :email].include?(k) }
+        raise NotImplementedError, "Unsupported parameter(s) in payload: #{payload.keys - ACCEPTED_PARAMS}" unless payload.keys.all? { |k| ACCEPTED_PARAMS.include?(k) }
 
         websites = payload[:websites]
         address = payload[:address] || ""
