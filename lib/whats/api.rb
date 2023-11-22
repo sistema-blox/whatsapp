@@ -3,6 +3,8 @@
 require "whats/actions/check_contacts"
 require "whats/actions/send_message"
 require "whats/actions/mark_read"
+require "whats/actions/business_profile"
+require "whats/actions/upload_media"
 
 module Whats
   class Api
@@ -38,6 +40,18 @@ module Whats
 
     def mark_read(message_id)
       Actions::MarkRead.new(client, message_id, phone_id).call
+    end
+
+    def update_business_profile(payload)
+      Actions::BusinessProfile.new(
+        client: client,
+        from_phone_number_id: phone_id,
+        payload: payload
+      ).call
+    end
+
+    def upload_media(file, type)
+      Actions::UploadMedia.new(client, phone_id, file, type).call
     end
 
     private
