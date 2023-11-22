@@ -3,6 +3,7 @@
 # Dependencies
 require "json"
 require "faraday_middleware/aws_sigv4"
+require "faraday/multipart"
 
 # Source
 require "whats/configuration"
