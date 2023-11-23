@@ -1,10 +1,13 @@
+require "whats/services/app/upload_session"
+require "whats/services/app/upload"
+
 module Whats
   module Actions
     class BusinessProfile
       attr_reader :client, :from_phone_number_id, :path, :payload
 
       ENDPOINT = "/v18.0/%{from_phone_number_id}/whatsapp_business_profile"
-      ACCEPTED_PARAMS = [:websites, :address, :description, :email, :about]
+      ACCEPTED_PARAMS = [:websites, :address, :description, :email, :about, :profile_picture_handle]
 
       def initialize(client:, from_phone_number_id:, payload:)
         @client = client
@@ -20,11 +23,29 @@ module Whats
       private
 
       def req_payload
+        set_profile_picture_url if payload[:file].instance_of?(File)
+
         validate_parameters
 
         {
           messaging_product: "whatsapp",
         }.merge(payload)
+      end
+
+      def set_profile_picture_url
+        file_length = payload[:file].size
+        file_type = `file --mime-type -b #{payload[:file].path}`.chomp
+        file_path = payload[:file].path
+        file_name = file_path.split("/").last
+        
+        us_response = App::UploadSession.call(client: client, file_length: file_length, file_type: file_type, file_name: file_name)
+        upload_response = App::Upload.call(client: client, file: File.binread(file_path), upload_id: us_response["id"], content_type: file_type)
+
+        payload.delete(:file)
+
+        return if upload_response["h"].nil?
+
+        payload[:profile_picture_handle] = upload_response["h"]
       end
 
       def validate_parameters
