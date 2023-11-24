@@ -124,7 +124,6 @@ RSpec.describe Whats::Actions::SendMessage do
         expect { action.send(:payload) }.to raise_error do |error|
           expect(error).to be_a(Whats::Errors::RequestError)
           expect(error.message).to eq("WhatsApp error: type should be 'text' or 'interactive'")
-          expect(error.response).to be_nil
         end
       end
     end

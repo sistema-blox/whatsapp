@@ -15,7 +15,7 @@ module Whats
       end
 
       def call
-        client.request path, payload, "multipart/form-data"
+        client.request(path:, payload:, content_type: "multipart/form-data")
       end
 
       private

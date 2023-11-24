@@ -3,6 +3,8 @@
 module Whats
   module Actions
     class Login
+      attr_reader :client
+    
       PATH = "/v1/users/login"
 
       def initialize(client)
@@ -12,7 +14,7 @@ module Whats
       end
 
       def call
-        response = client.request(PATH)
+        response = client.request(path: PATH)
         extract_atributes(response) unless @token
         @token
       end
@@ -22,8 +24,6 @@ module Whats
       end
 
       private
-
-      attr_reader :client
 
       def extract_atributes(response)
         @token = response["users"].first["token"]

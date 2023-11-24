@@ -20,7 +20,7 @@ RSpec.describe Whats::Actions::Login do
 
     it "returns a valid token" do
       client = instance_double(Whats::Client)
-      allow(client).to receive(:request).with("/v1/users/login").and_return({ "users" => [{ "token" => token }] })
+      allow(client).to receive(:request).with(path: "/v1/users/login").and_return({ "users" => [{ "token" => token }] })
 
       login_instance = described_class.new(client)
       extracted_token = login_instance.token

@@ -17,12 +17,14 @@ module Whats
       end
 
       def call
-        client.request path, req_payload 
+        client.request(path: path, payload: req_payload)
       end
       
       private
 
       def req_payload
+        raise ArgumentError, "req_payload must be a Hash" unless payload.instance_of?(Hash)
+        
         set_profile_picture_url if payload[:file].instance_of?(File)
 
         validate_parameters
@@ -39,17 +41,19 @@ module Whats
         file_name = file_path.split("/").last
         
         us_response = App::UploadSession.call(client: client, file_length: file_length, file_type: file_type, file_name: file_name)
+
+        raise "Upload session response does not contain an id." if us_response["id"].nil?
+
         upload_response = App::Upload.call(client: client, file: File.binread(file_path), upload_id: us_response["id"], content_type: file_type)
 
         payload.delete(:file)
 
-        return if upload_response["h"].nil?
+        raise "Upload response does not contain a handle." if upload_response["h"].nil?
 
         payload[:profile_picture_handle] = upload_response["h"]
       end
 
       def validate_parameters
-        raise ArgumentError, "req_payload must be a Hash" unless payload.instance_of?(Hash)
         raise NotImplementedError, "Unsupported parameter(s) in payload: #{payload.keys - ACCEPTED_PARAMS}" unless payload.keys.all? { |k| ACCEPTED_PARAMS.include?(k) }
 
         websites = payload[:websites]
@@ -58,11 +62,11 @@ module Whats
         email = payload[:email] || ""
 
         reg = /^http(s){0,1}:(\/){2}/
+        email_reg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
         common_website_error = "You must include the http:// or https:// portion of the URL."
         
         if websites.instance_of?(String)
-          return if websites.empty?
-
+          raise common_error % { param: "website", size: 256 } if websites.size > 256
           raise common_website_error unless websites.match?(reg)
         end
 
@@ -70,13 +74,17 @@ module Whats
           raise "There is a maximum of 2 websites with a maximum of 256 characters each." if websites.size > 2
 
           websites.each do |website|
+            raise common_error % { param: "Website", size: 256 } if website.size > 256
             raise common_website_error unless website.match?(reg)
           end
         end
 
         raise common_error % { param: "Address", size: 256 } if address.size > 256 
         raise common_error % { param: "Description", size: 512 } if description.size > 512
-        raise common_error % { param: "The contact email address (in valid email format)", size: 128 } if email.size > 128
+
+        if !email.empty? && !email.match?(email_reg) || email.size > 128
+          raise common_error % { param: "The contact email address (in valid email format)", size: 128 }
+        end
       end
 
       def common_error

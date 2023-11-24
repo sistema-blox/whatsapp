@@ -14,7 +14,7 @@ module Whats
       attr_reader :path
 
       def call
-        client.request path, payload
+        client.request(path:, payload:)
       end
 
       private

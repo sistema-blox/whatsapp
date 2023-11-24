@@ -17,7 +17,7 @@ module App
     end
 
     def call
-      client.request path 
+      client.request(path:) 
     end
 
     private

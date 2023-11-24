@@ -16,7 +16,7 @@ module Whats
       @token_type = token_type
     end
 
-    def request(path, payload = nil, content_type = "application/json", method = :post, overwrite_token_type = nil)
+    def request(path:, payload: nil, content_type: "application/json", method: :post, overwrite_token_type: nil)
       raise ArgumentError, 'Invalid method' unless METHODS.include?(method)
       
       unless overwrite_token_type.nil?

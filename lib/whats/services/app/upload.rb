@@ -16,7 +16,7 @@ module App
     end
 
     def call
-      client.request path, file, content_type, :post, :oauth
+      client.request(path:, payload: file, content_type:, method: :post, overwrite_token_type: :oauth)
     end
   end
 end
