@@ -78,7 +78,33 @@ For more complex messages like templates, see [WhatsApp Message Templates](https
 ```ruby
 # Example of sending a template message
 body = {
-  # Detailed structure of the message
+  "type": "list",
+  "header": {
+   "type": "text",
+   "text": "title"
+  },
+  "body": {
+   "text": "body"
+  },
+  "action": {
+   "button": "button title",
+   "sections": [
+    {
+     "title": "section title",
+     "rows": [
+      {
+       "id": "1",
+       "title": "button 1"
+      },
+      {
+       "id": "2",
+       "title": "button 2"
+      },
+      ...
+     ]
+    }
+   ]
+  }
 }
 
 whats.send_message("5511942424242", "interactive", body)
