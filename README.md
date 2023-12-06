@@ -1,39 +1,58 @@
-# WhatsApp
 
+# WhatsApp
 [![Build Status](https://travis-ci.org/getninjas/whatsapp.svg?branch=master)](https://travis-ci.org/getninjas/whatsapp)
 [![Gem Version](https://badge.fury.io/rb/whatsapp.svg)](https://badge.fury.io/rb/whatsapp)
 
-A ruby interface to WhatsApp Enterprise API.
+A ruby interface to WhatsApp Enterprise API, providing easy access to send and receive messages, manage profiles, and more via the WhatsApp Business API.
+
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Setting up a WhatsApp Business API Client](#setting-up-a-whatsapp-business-api-client)
+  - [Sending Messages](#sending-messages)
+  - [Checking Contacts](#checking-contacts)
+  - [Marking Messages as Read](#marking-messages-as-read)
+  - [Profile Management](#profile-management)
+  - [Get Media](#get-media)
+  - [Receiving Messages](#receiving-messages)
+- [Tests](#tests)
 
 ## Installation
+
+### Via Gemfile
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "whatsapp"
+gem 'whatsapp', github: 'sistema-blox/whatsapp'
 ```
 
-Or manualy install
+And then execute:
+
+```bash
+bundle install
+```
+
+### Manual Installation
+
+Alternatively, you can install it yourself via:
+
 ```bash
 gem install whatsapp
-```
-then require it when there's a need to use it
-```ruby
-require "whatsapp"
 ```
 
 ## Usage
 
 ### Setting up a WhatsApp Business API Client
 
-For the gem to be useful you need:
-- A Facebook Business Manager account
-- A verified business
-- A WhatsApp business account
-  
-Check out: https://developers.facebook.com/docs/whatsapp/on-premises/get-started
+Before using the gem, ensure you have:
+- A Facebook Business Manager account.
+- A verified business.
+- A WhatsApp business account.
 
-### Configuration
+For more details, visit: [WhatsApp Business API Setup](https://developers.facebook.com/docs/whatsapp/cloud-api/get-started).
+
+#### Configuration
 
 ```ruby
 Whats.configure do |config|
@@ -41,42 +60,24 @@ Whats.configure do |config|
   config.phone_id = "your phone id"
   config.token = "your token"
 end
-```
 
-Create an instance of the API client, which is going to be used from now on to interact with whatsapp
-
-```ruby
 whats = Whats::Api.new
 ```
 
-### Check Contacts
+### Sending Messages
 
-Take a look [here](https://developers.facebook.com/docs/whatsapp/api/contacts) (WhatsApp Check Contacts doc) for more information.
+#### Text Message
 
 ```ruby
-whats.check_contacts(["+5511942424242"])
-
-# output:
-{
-  "contacts" => [
-    {
-      "input" => "+5511942424242",
-      "status" => "valid",
-      "wa_id" => "5511942424242"
-    }
-  ]
-}
+whats.send_message("5511942424242", "text", "Message goes here.")
 ```
 
-### Send Message
+#### Template Message
 
-Take a look [here](https://developers.facebook.com/docs/whatsapp/api/messages/text) (WhatsApp Send Message doc) and [here](https://developers.facebook.com/docs/messenger-platform/send-messages/templates) (Whatsapp Message Templates) for more information.
+For more complex messages like templates, see [WhatsApp Message Templates](https://developers.facebook.com/docs/messenger-platform/send-messages/templates).
 
 ```ruby
-# To send a text message
-whats.send_message("5511942424242", "text", "Message goes here.")
-
-# To send a template message
+# Example of sending a template message
 body = {
   "type": "list",
   "header": {
@@ -105,43 +106,84 @@ body = {
     }
    ]
   }
- }
+}
 
 whats.send_message("5511942424242", "interactive", body)
-
-# output:
-{
-  "messages" => [{
-    "id" => "BAEC4D1D7549842627"
-  }]
-}
 ```
 
-### Mark Messages as Read
-Take a look [here](https://developers.facebook.com/docs/whatsapp/cloud-api/guides/mark-message-as-read) for more information.
+### Checking Contacts
+
+For checking contact details:
+
+```ruby
+whats.check_contacts(["+5511942424242"])
+```
+
+### Marking Messages as Read
+
+To mark a message as read:
+
 ```ruby
 whats.mark_read("message_id")
-
-# output:
-{
-  "success": true
-}
 ```
 
-### Receive a Message
-To receive a message you should configure a webhook as explained [here](https://developers.facebook.com/docs/whatsapp/sample-app-endpoints#cloud-api-sample-app-endpoint). Take a look a simple Ruby on Rails example [here](https://github.com/saleszera/whatsapp_echo_bot/blob/main/app/controllers/webhooks_controller.rb)
+### Profile Management
+
+Update your business profile using:
+
+```ruby
+whats.update_business_profile(
+  about: "<profile-about-text>",                           # The business's **About** text. This text appears in the business's profile, beneath its profile image, phone number, and contact buttons.
+  address: "<business-address>",                           # Address of the business. Character limit 256.
+  description: "<business-description>",                   # Description of the business. Character limit 512.
+  email: "<business-email>",                               # The contact email address (in valid email format) of the business. Character limit 128.
+  file: "<file>",                                          # Desired image for profile picture, it must be 1024x1024.
+  websites: ["<https://website-1>", "<https://website-2>"] # The URLs associated with the business. For instance, a website, Facebook Page, or Instagram. You must include the http:// or https:// portion of the URL. There is a maximum of 2 websites with a maximum of 256 characters each.
+)
+```
+
+### Get Media
+Sometimes we receive medias from our customers, to get this media you need:
+
+- Send your media_id to get_media action
+  ```ruby
+   whats.get_media(123)
+  ```
+  Your response will be like this:
+  ```ruby
+   {
+    "url"=>"https://lookaside.fbsbx.com/whatsapp_business/attachments/?mid=123&ext=123&hash=123-456",
+    "mime_type"=>"audio/ogg",           
+    "sha256"=>"sha256",
+    "file_size"=>7645,                  
+    "id"=>"123",           
+    "messaging_product"=>"whatsapp"
+   }
+  ```
+- Send media_url to download_media action
+  ```ruby
+    # based in our last example
+    whats.download_media("https://lookaside.fbsbx.com/whatsapp_business/attachments/?mid=123&ext=123&hash=123-456")
+  ```
+  now you have a file called `media.ogg`
+
+### Receiving Messages
+
+To receive messages, configure a webhook as explained in the [WhatsApp documentation](https://developers.facebook.com/docs/whatsapp/sample-app-endpoints#cloud-api-sample-app-endpoint).
 
 ## Tests
 
-### Running tests
+### Running Tests
+
+Execute tests using:
 
 ```shell
 rspec
 ```
 
-### Debugging specs
+### Debugging Specs
 
-You can print all stubs using the environment variable `PRINT_STUBS=true` like this:
+To print all stubs:
 
 ```shell
 PRINT_STUBS=true rspec

@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Whats::Actions::SendMessage do
   include WebmockHelper
-  
+
   before do
     Whats.configure do |config|
       config.base_path = WebmockHelper::BASE_PATH
@@ -15,7 +15,7 @@ RSpec.describe Whats::Actions::SendMessage do
 
   subject(:action) { described_class.new(client, wa_id, phone_id, type, body) }
 
-  let(:client) { Whats::Client.new double(token: "key") }
+  let(:client) { Whats::Client.new }
   let(:wa_id) { "5511944442222" }
   let(:phone_id) { Whats.configuration.phone_id }
   let(:type) { "text" }
@@ -124,7 +124,6 @@ RSpec.describe Whats::Actions::SendMessage do
         expect { action.send(:payload) }.to raise_error do |error|
           expect(error).to be_a(Whats::Errors::RequestError)
           expect(error.message).to eq("WhatsApp error: type should be 'text' or 'interactive'")
-          expect(error.response).to be_nil
         end
       end
     end

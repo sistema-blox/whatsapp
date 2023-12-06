@@ -15,7 +15,7 @@ RSpec.describe Whats::Actions::MarkRead do
 
   subject(:action) { described_class.new(client, message_id, phone_id) }
 
-  let(:client) { Whats::Client.new double(token: "key") }
+  let(:client) { Whats::Client.new }
   let(:message_id) { "123" }
   let(:phone_id) { "9999999999999" }
 

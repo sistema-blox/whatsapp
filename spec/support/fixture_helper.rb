@@ -79,8 +79,4 @@ module FixtureHelper
   def mark_read_invalid_response
     load_json("mark_read_invalid_response")
   end
-
-  def login_response(token)
-    load_json "login_response", token: token
-  end
 end

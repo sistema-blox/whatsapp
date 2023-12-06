@@ -11,7 +11,7 @@ module Whats
       end
 
       def call
-        client.request PATH, payload
+        client.request(path: PATH, payload:)
       end
 
       private

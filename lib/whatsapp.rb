@@ -2,7 +2,7 @@
 
 # Dependencies
 require "json"
-require "faraday_middleware/aws_sigv4"
+require "net/http"
 
 # Source
 require "whats/configuration"
