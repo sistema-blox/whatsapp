@@ -1,5 +1,3 @@
-require "faraday"
-
 module Whats
   module Actions
     class UploadMedia
@@ -22,7 +20,7 @@ module Whats
 
       def payload
         {
-          file: Faraday::FilePart.new(file, type),
+          file:,
           type:,
           messaging_product: "whatsapp"
         }

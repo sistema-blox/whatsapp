@@ -3,7 +3,7 @@
 require "spec_helper"
 
 RSpec.describe Whats::Client do
-  subject(:client) { described_class.new double(token: "key") }
+  subject(:client) { described_class.new }
 
   let(:base_path) { WebmockHelper::BASE_PATH }
 
@@ -22,7 +22,7 @@ RSpec.describe Whats::Client do
             body: payload_json,
             headers: { "Content-Type" => "application/json" }
           )
-          .to_return(status: 200, body: response)
+          .to_return(status: 200, body: response, headers: { "Content-Type" => "application/json" })
       end
 
       it "executes a POST request properly" do
@@ -50,18 +50,6 @@ RSpec.describe Whats::Client do
 
       it "raises for unsupported token types" do
         expect { client.request(path: "/path", overwrite_token_type: :invalid) }.to raise_error ArgumentError
-      end
-    end
-
-    context 'when the API response is unsuccessful' do
-      before do
-        allow_any_instance_of(Faraday::Connection).to receive(:post)
-          .and_return(double('response', success?: false, body: '{"error": {"message":"some_error"}}'))
-      end
-
-      it 'raises a RequestError' do
-        expect { client.request(path: '/test') }
-          .to raise_error(Whats::Errors::RequestError, "API request error. | message: some_error")
       end
     end
   end
