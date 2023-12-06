@@ -8,6 +8,8 @@ module Whats
 
       ENDPOINT = "/v18.0/%{from_phone_number_id}/whatsapp_business_profile"
       ACCEPTED_PARAMS = [:websites, :address, :description, :email, :about, :profile_picture_handle]
+      HTTP_REGEX = /^http(s){0,1}:(\/){2}/
+      EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
       def initialize(client:, from_phone_number_id:, payload:)
         @client = client
@@ -61,13 +63,9 @@ module Whats
         description = payload[:description] || ""
         email = payload[:email] || ""
 
-        reg = /^http(s){0,1}:(\/){2}/
-        email_reg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-        common_website_error = "You must include the http:// or https:// portion of the URL."
-
         if websites.instance_of?(String)
           raise char_limit_error("Website", 256) if websites.size > 256
-          raise common_website_error unless websites.match?(reg)
+          raise common_website_error unless websites.match?(HTTP_REGEX)
         end
 
         if websites.instance_of?(Array)
@@ -75,16 +73,20 @@ module Whats
 
           websites.each do |website|
             raise char_limit_error("Website", 256) if website.size > 256
-            raise common_website_error unless website.match?(reg)
+            raise website_error unless website.match?(HTTP_REGEX)
           end
         end
 
         raise char_limit_error("Address", 256) if address.size > 256
         raise char_limit_error("Description", 512) if description.size > 512
 
-        if !email.empty? && !email.match?(email_reg) || email.size > 128
+        if !email.empty? && !email.match?(EMAIL_REGEX) || email.size > 128
           raise char_limit_error("The contact email address (in valid email format)", 128)
         end
+      end
+
+      def website_error
+        "You must include the http:// or https:// portion of the URL."
       end
 
       def char_limit_error(param, size)
