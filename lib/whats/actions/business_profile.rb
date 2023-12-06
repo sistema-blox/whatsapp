@@ -65,7 +65,7 @@ module Whats
 
         if websites.instance_of?(String)
           raise char_limit_error("Website", 256) if websites.size > 256
-          raise common_website_error unless websites.match?(HTTP_REGEX)
+          raise website_error unless websites.match?(HTTP_REGEX)
         end
 
         if websites.instance_of?(Array)
