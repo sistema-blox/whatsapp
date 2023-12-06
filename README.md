@@ -13,6 +13,7 @@ A ruby interface to WhatsApp Enterprise API, providing easy access to send and r
   - [Checking Contacts](#checking-contacts)
   - [Marking Messages as Read](#marking-messages-as-read)
   - [Profile Management](#profile-management)
+  - [Get Media](#get-media)
   - [Receiving Messages](#receiving-messages)
 - [Tests](#tests)
 
@@ -140,6 +141,31 @@ whats.update_business_profile(
   websites: ["<https://website-1>", "<https://website-2>"] # The URLs associated with the business. For instance, a website, Facebook Page, or Instagram. You must include the http:// or https:// portion of the URL. There is a maximum of 2 websites with a maximum of 256 characters each.
 )
 ```
+
+### Get Media
+Sometimes we receive medias from our customers, to get this media you need:
+
+- Send your media_id to get_media action
+  ```ruby
+   whats.get_media(123)
+  ```
+  Your response will be like this:
+  ```ruby
+   {
+    "url"=>"https://lookaside.fbsbx.com/whatsapp_business/attachments/?mid=123&ext=123&hash=123-456",
+    "mime_type"=>"audio/ogg",           
+    "sha256"=>"sha256",
+    "file_size"=>7645,                  
+    "id"=>"123",           
+    "messaging_product"=>"whatsapp"
+   }
+  ```
+- Send media_url to download_media action
+  ```ruby
+    # based in our last example
+    whats.download_media("https://lookaside.fbsbx.com/whatsapp_business/attachments/?mid=123&ext=123&hash=123-456")
+  ```
+  now you have a file called media.ogg
 
 ### Receiving Messages
 
