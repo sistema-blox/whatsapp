@@ -5,6 +5,8 @@ require "whats/actions/send_message"
 require "whats/actions/mark_read"
 require "whats/actions/business_profile"
 require "whats/actions/upload_media"
+require "whats/actions/get_media"
+require "whats/actions/download_media"
 
 module Whats
   class Api
@@ -54,12 +56,20 @@ module Whats
       Actions::UploadMedia.new(client, phone_id, file, type).call
     end
 
+    def get_media(media_id)
+      Actions::GetMedia.new(client, media_id).call
+    end
+
+    def download_media(media_url)
+      Actions::DownloadMedia.new(media_url).call
+    end
+
     private
 
     attr_reader :base_path
 
     def client
-      @client ||= Whats::Client.new(@token)
+      @client ||= Whats::Client.new
     end
   end
 end
