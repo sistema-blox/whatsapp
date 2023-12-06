@@ -19,8 +19,7 @@ Gem::Specification.new do |spec|
   spec.files         = Dir["lib/**/*"]
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "faraday_middleware-aws-sigv4",         "~> 0.5.0"
-  spec.add_dependency "faraday-multipart",                    "~> 1.0"
+  spec.add_dependency "net-http",                           "~> 0.4"
 
   spec.add_development_dependency "bundler",                   "~> 2.4"
   spec.add_development_dependency "pry-byebug",                "~> 3.6"
