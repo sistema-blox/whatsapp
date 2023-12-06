@@ -165,7 +165,7 @@ Sometimes we receive medias from our customers, to get this media you need:
     # based in our last example
     whats.download_media("https://lookaside.fbsbx.com/whatsapp_business/attachments/?mid=123&ext=123&hash=123-456")
   ```
-  now you have a file called media.ogg
+  now you have a file called `media.ogg`
 
 ### Receiving Messages
 
