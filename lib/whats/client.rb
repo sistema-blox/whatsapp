@@ -100,7 +100,7 @@ module Whats
       unless response.is_a?(Net::HTTPSuccess)
         err = response.content_type == "application/json" ? response.body : ""
 
-        raise Whats::Errors::RequestError.new("API request error.", err)
+        raise Whats::Errors::RequestError.new("API request error.", JSON.parse(err))
       end
 
       parse_response(response)
@@ -119,11 +119,9 @@ module Whats
     end
 
     def parse_json_response(response)
-      begin
-        JSON.parse(response.body)
-      rescue JSON::ParserError => e
-        raise Whats::Errors::ParseError, "JSON parsing error: #{e.message}"
-      end
+      JSON.parse(response.body)
+    rescue JSON::ParserError => e
+      raise Whats::Errors::ParseError, "JSON parsing error: #{e.message}"
     end
 
     def download_media(response, content_type)
