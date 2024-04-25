@@ -8,6 +8,8 @@ require "whats/actions/upload_media"
 require "whats/actions/get_media"
 require "whats/actions/download_media"
 require "whats/actions/templates/create"
+require "whats/actions/templates/update"
+require "whats/actions/templates/delete"
 
 module Whats
   class Api
@@ -67,6 +69,14 @@ module Whats
 
     def create_template(payload)
       Actions::Templates::Create.new(client, payload).call
+    end
+
+    def update_template(template_id, payload)
+      Actions::Templates::Update.new(client, template_id, payload).call
+    end
+
+    def delete_template(template_id)
+      Actions::Templates::Delete.new(client, template_id).call
     end
 
     private
