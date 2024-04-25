@@ -81,17 +81,15 @@ module FixtureHelper
     load_json("mark_read_invalid_response")
   end
 
-  def create_template_valid_request(payload)
-    {
-      name: payload[:name],
-      category: payload[:category],
-      allow_category_change: payload[:allow_category_change],
-      language: payload[:language],
-      components: payload[:components]
-    }.to_json
-  end
-
   def create_template_valid_response
     load_json("create_template_valid_response")
+  end
+
+  def update_template_valid_response
+    load_json("update_template_valid_response")
+  end 
+
+  def delete_template_valid_response
+    load_json("delete_template_valid_response")
   end
 end
