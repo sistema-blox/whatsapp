@@ -5,11 +5,13 @@ require_relative "fixture_helper"
 module WebmockHelper
   include FixtureHelper
 
-  BASE_PATH             = "http://test.local"
-  CHECK_CONTACTS_URL    = "#{BASE_PATH}#{Whats::Actions::CheckContacts::PATH}"
-  SEND_MESSAGE_URL      = "#{BASE_PATH}#{Whats::Actions::SendMessage::ENDPOINT}"
-  MARK_READ_URL         = "#{BASE_PATH}#{Whats::Actions::MarkRead::ENDPOINT}"
-  MESSAGE_TEMPLATE_URL  = "#{BASE_PATH}#{Whats::Actions::Templates::Create::ENDPOINT}"
+  BASE_PATH                   = "http://test.local"
+  CHECK_CONTACTS_URL          = "#{BASE_PATH}#{Whats::Actions::CheckContacts::PATH}"
+  SEND_MESSAGE_URL            = "#{BASE_PATH}#{Whats::Actions::SendMessage::ENDPOINT}"
+  MARK_READ_URL               = "#{BASE_PATH}#{Whats::Actions::MarkRead::ENDPOINT}"
+  MESSAGE_TEMPLATE_URL        = "#{BASE_PATH}#{Whats::Actions::Templates::Create::ENDPOINT}"
+  UPDATE_MESSAGE_TEMPLATE_URL = "#{BASE_PATH}#{Whats::Actions::Templates::Update::ENDPOINT}"
+  DELETE_MESSAGE_TEMPLATE_URL = "#{BASE_PATH}#{Whats::Actions::Templates::Delete::ENDPOINT}"
 
   def stub_check_contacts_with_valid_number(contact, wa_id)
     stub_default(
@@ -103,8 +105,30 @@ module WebmockHelper
     stub_default(
       url,
       method: :post,
-      request_body: create_template_valid_request(payload),
+      request_body: payload.to_json,
       response_body: create_template_valid_response
+    )
+  end
+
+  def stub_update_message_template(template_id, payload)
+    url = URI::DEFAULT_PARSER.escape(UPDATE_MESSAGE_TEMPLATE_URL % { waba_id: Whats.configuration.waba_id, template_id: template_id })
+
+    stub_default(
+      url,
+      method: :post,
+      request_body: payload.to_json,
+      response_body: update_template_valid_response
+    )
+  end
+
+  def stub_delete_message_template(template_name)
+    url = URI::DEFAULT_PARSER.escape(DELETE_MESSAGE_TEMPLATE_URL % { waba_id: Whats.configuration.waba_id, template_name: })
+
+    stub_default(
+      url,
+      method: :delete,
+      request_body: "",
+      response_body: delete_template_valid_response
     )
   end
 
