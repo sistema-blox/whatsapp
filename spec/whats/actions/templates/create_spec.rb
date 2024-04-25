@@ -20,7 +20,6 @@ RSpec.describe Whats::Actions::Templates::Create do
       name: "Template Name",
       category: "MARKETING",
       language: "pt_BR",
-      allow_category_change: true,
       components: [
         {
           type: "BODY",

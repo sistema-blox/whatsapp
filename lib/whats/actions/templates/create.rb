@@ -21,7 +21,7 @@ module Whats
 
         validates :name, presence: true
         validates :category, presence: true, inclusion: { in: AVAILABLE_CATEGORIES }
-        validates :allow_category_change, inclusion: { in: [true, false] }
+        validates :allow_category_change, inclusion: { in: [true, false] }, allow_nil: true
         validates :language, presence: true, inclusion: { in: AVAILABLE_LANGUAGE_CODES }
         validates :components, presence: true, length: { minimum: 1 }
 
@@ -29,7 +29,7 @@ module Whats
           @client = client
           @name = payload[:name]
           @category = payload[:category]
-          @allow_category_change = payload[:allow_category_change] || true
+          @allow_category_change = payload[:allow_category_change]
           @language = payload[:language]
           @components = payload[:components]
         end
@@ -55,7 +55,7 @@ module Whats
             allow_category_change:,
             language:,
             components:
-          }
+          }.compact
         end
       end
     end
