@@ -7,6 +7,7 @@ require "whats/actions/business_profile"
 require "whats/actions/upload_media"
 require "whats/actions/get_media"
 require "whats/actions/download_media"
+require "whats/actions/create_template"
 
 module Whats
   class Api
@@ -62,6 +63,10 @@ module Whats
 
     def download_media(media_url)
       Actions::DownloadMedia.new(media_url).call
+    end
+
+    def create_template(payload)
+      Actions::CreateTemplate.new(client, payload).call
     end
 
     private
