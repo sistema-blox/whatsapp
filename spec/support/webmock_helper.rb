@@ -5,10 +5,11 @@ require_relative "fixture_helper"
 module WebmockHelper
   include FixtureHelper
 
-  BASE_PATH          = "http://test.local"
-  CHECK_CONTACTS_URL = "#{BASE_PATH}#{Whats::Actions::CheckContacts::PATH}"
-  SEND_MESSAGE_URL   = "#{BASE_PATH}#{Whats::Actions::SendMessage::ENDPOINT}"
-  MARK_READ_URL      = "#{BASE_PATH}#{Whats::Actions::MarkRead::ENDPOINT}"
+  BASE_PATH             = "http://test.local"
+  CHECK_CONTACTS_URL    = "#{BASE_PATH}#{Whats::Actions::CheckContacts::PATH}"
+  SEND_MESSAGE_URL      = "#{BASE_PATH}#{Whats::Actions::SendMessage::ENDPOINT}"
+  MARK_READ_URL         = "#{BASE_PATH}#{Whats::Actions::MarkRead::ENDPOINT}"
+  MESSAGE_TEMPLATE_URL  = "#{BASE_PATH}#{Whats::Actions::CreateTemplate::ENDPOINT}"
 
   def stub_check_contacts_with_valid_number(contact, wa_id)
     stub_default(
@@ -93,6 +94,17 @@ module WebmockHelper
       url,
       request_body: mark_read_request(message_id),
       response_body: mark_read_invalid_response
+    )
+  end
+
+  def stub_create_template_with_valid_params(payload)
+    url = URI::DEFAULT_PARSER.escape(MESSAGE_TEMPLATE_URL % { waba_id: Whats.configuration.waba_id })
+
+    stub_default(
+      url,
+      method: :post,
+      request_body: create_template_valid_request(payload),
+      response_body: create_template_valid_response
     )
   end
 

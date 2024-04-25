@@ -4,6 +4,7 @@ module FixtureHelper
   def load_json(path, variables = nil)
     data = File.read("spec/fixtures/#{path}.json")
     data = data % variables if variables
+
     JSON.parse(data).to_json
   end
 
@@ -78,5 +79,19 @@ module FixtureHelper
 
   def mark_read_invalid_response
     load_json("mark_read_invalid_response")
+  end
+
+  def create_template_valid_request(payload)
+    {
+      name: payload[:name],
+      category: payload[:category],
+      allow_category_change: payload[:allow_category_change],
+      language: payload[:language],
+      components: payload[:components]
+    }.to_json
+  end
+
+  def create_template_valid_response
+    load_json("create_template_valid_response")
   end
 end
