@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Whats::Actions::CreateTemplate do
+RSpec.describe Whats::Actions::Templates::Create do
   include WebmockHelper
 
   before do

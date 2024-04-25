@@ -9,7 +9,7 @@ module WebmockHelper
   CHECK_CONTACTS_URL    = "#{BASE_PATH}#{Whats::Actions::CheckContacts::PATH}"
   SEND_MESSAGE_URL      = "#{BASE_PATH}#{Whats::Actions::SendMessage::ENDPOINT}"
   MARK_READ_URL         = "#{BASE_PATH}#{Whats::Actions::MarkRead::ENDPOINT}"
-  MESSAGE_TEMPLATE_URL  = "#{BASE_PATH}#{Whats::Actions::CreateTemplate::ENDPOINT}"
+  MESSAGE_TEMPLATE_URL  = "#{BASE_PATH}#{Whats::Actions::Templates::Create::ENDPOINT}"
 
   def stub_check_contacts_with_valid_number(contact, wa_id)
     stub_default(
