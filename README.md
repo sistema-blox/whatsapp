@@ -14,6 +14,7 @@ A ruby interface to WhatsApp Enterprise API, providing easy access to send and r
   - [Marking Messages as Read](#marking-messages-as-read)
   - [Profile Management](#profile-management)
   - [Get Media](#get-media)
+  - [Template Messages](#template-messages)
   - [Receiving Messages](#receiving-messages)
 - [Tests](#tests)
 
@@ -200,7 +201,8 @@ Sometimes we receive medias from our customers, to get this media you need:
   ```
   now you have a file called `media.ogg`
 
-### Create template messages
+### Template Messages
+#### Create template
 First, take a look at the documentation [here](https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates#creating-templates).
 
 ```ruby
@@ -228,7 +230,7 @@ Your response will be like this:
     }
 ```
 
-### Update template messages
+#### Update template
 Take a look at the documentation [here](https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates#edit-a-message-template).
 
 ```ruby
@@ -252,7 +254,7 @@ Your response will be like this:
     }
 ```
 
-### Delete template messages
+#### Delete template
 Take a look at the documentation [here](https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates#deleting-templates).
 
 ```ruby
