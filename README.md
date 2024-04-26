@@ -59,6 +59,7 @@ Whats.configure do |config|
   config.base_path = "https://example.test"
   config.phone_id = "your phone id"
   config.token = "your token"
+  config.waba_id = "your whatsapp business account id"
 end
 
 whats = Whats::Api.new
@@ -72,9 +73,9 @@ whats = Whats::Api.new
 whats.send_message("5511942424242", "text", "Message goes here.")
 ```
 
-#### Template Message
+#### Interactive Message
 
-For more complex messages like templates, see [WhatsApp Message Templates](https://developers.facebook.com/docs/messenger-platform/send-messages/templates).
+See [WhatsApp interactive messages](https://developers.facebook.com/docs/messenger-platform/send-messages/templates).
 
 ```ruby
 # Example of sending a template message
@@ -109,6 +110,38 @@ body = {
 }
 
 whats.send_message("5511942424242", "interactive", body)
+```
+
+#### Template Message
+Take a look at the documentation [here](https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-message-templates).
+
+```ruby
+    payload = {
+        "name": "test_by_api",
+        "category": "UTILITY",
+        "language": "pt_BR",
+        "components": [
+            {
+                "type": "BODY",
+                "text": "This a template created by API"
+            },
+            {
+                "type": "BUTTONS",
+                "buttons": [
+                    {
+                        "type": "QUICK_REPLY",
+                        "text": "Button example 1"
+                    },
+                    {
+                        "type": "QUICK_REPLY",
+                        "text": "Button example 2"
+                    }
+                ]
+            }
+        ]
+    }
+
+    whats.send_message("5511942424242", "template", payload)
 ```
 
 ### Checking Contacts
@@ -166,6 +199,74 @@ Sometimes we receive medias from our customers, to get this media you need:
     whats.download_media("https://lookaside.fbsbx.com/whatsapp_business/attachments/?mid=123&ext=123&hash=123-456")
   ```
   now you have a file called `media.ogg`
+
+### Create template messages
+First, take a look at the documentation [here](https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates#creating-templates).
+
+```ruby
+    payload = {
+      name: "Template Name",
+      category: "MARKETING",
+      language: "pt_BR",
+      components: [
+        {
+          type: "BODY",
+          text: "Body text"
+        }
+      ]
+    }
+
+    whats.create_template(payload)
+```
+
+Your response will be like this:
+```json
+    {
+      "id": "123445678",
+      "status": "APPROVED",
+      "category": "MARKETING"
+    }
+```
+
+### Update template messages
+Take a look at the documentation [here](https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates#edit-a-message-template).
+
+```ruby
+    # Note: 
+    # - Only templates with an APPROVED, REJECTED, or PAUSED status can be edited.
+    # - You can only edit a template's category or components.
+    # - You cannot edit the category of an approved template.
+
+    template_id = "123445678"
+    payload = {
+      category: "UTILITY"
+    }
+
+    whats.update_template(template_id, payload)
+```
+
+Your response will be like this:
+```json
+    {
+      "success": true
+    }
+```
+
+### Delete template messages
+Take a look at the documentation [here](https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates#deleting-templates).
+
+```ruby
+    template_id = "123445678"
+
+    whats.delete_template(template_id)
+```
+
+Your response will be like this:
+```json
+    {
+      "success": true
+    }
+```
 
 ### Receiving Messages
 
