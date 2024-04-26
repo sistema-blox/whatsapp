@@ -44,9 +44,22 @@ module Whats
             type: type,
             interactive: body
           )
+        when 'template'
+          COMMON_PAYLOAD.merge(
+            to: wa_id,
+            type: type,
+            **template_payload
+          )
         else
           raise Whats::Errors::RequestError.new("WhatsApp error: type should be 'text' or 'interactive'")
         end
+      end
+
+      def template_payload
+        {
+          template: body[:template],
+          components: body[:components] 
+        }.compact
       end
     end
   end
