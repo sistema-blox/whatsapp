@@ -31,4 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov",                 "~> 0.16"
   spec.add_development_dependency "simplecov-console",         "~> 0.4"
   spec.add_development_dependency "webmock",                   "~> 3.3"
+  spec.add_development_dependency "activemodel",               "~> 6.0"
 end

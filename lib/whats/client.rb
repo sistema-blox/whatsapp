@@ -5,7 +5,7 @@ module Whats
   class Client
     attr_reader :base_path, :content_type, :full_path, :http_client, :payload, :token, :token_type
 
-    METHODS = [:get, :post]
+    METHODS = [:get, :post, :delete]
     AVAILABLE_TOKEN_TYPES = [:basic, :bearer, :oauth]
 
     def initialize(token_type: :bearer, url: nil)
@@ -75,7 +75,7 @@ module Whats
     end
 
     def send_request(method)
-      method == :post ? send_post_request : send_get_request
+      send("send_#{method}_request")
     end
 
     def send_post_request
@@ -87,6 +87,11 @@ module Whats
 
     def send_get_request
       request = Net::HTTP::Get.new(full_path, headers)
+      http_client.request(request)
+    end
+
+    def send_delete_request
+      request = Net::HTTP::Delete.new(full_path, headers)
       http_client.request(request)
     end
 
