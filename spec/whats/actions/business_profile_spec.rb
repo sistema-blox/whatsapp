@@ -160,7 +160,7 @@ RSpec.describe Whats::Actions::BusinessProfile do
 
       it 'does not make any upload requests' do
         expect(App::UploadSession).not_to receive(:call)
-        expect(App::Upload).not_to receive(:call)
+        expect(App::RetrieveMedia).not_to receive(:call)
 
         business_profile.call
       end

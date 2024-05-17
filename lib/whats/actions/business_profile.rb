@@ -46,7 +46,7 @@ module Whats
 
         raise "Upload session response does not contain an id." if us_response["id"].nil?
 
-        upload_response = App::Upload.call(client: client, file: File.binread(file_path), upload_id: us_response["id"], content_type: file_type)
+        upload_response = App::RetrieveMedia.call(client: client, file: File.binread(file_path), upload_id: us_response["id"], content_type: file_type)
 
         payload.delete(:file)
 
