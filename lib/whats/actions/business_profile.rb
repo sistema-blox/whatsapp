@@ -1,5 +1,5 @@
 require "whats/services/app/upload_session"
-require "whats/services/app/upload"
+require "whats/services/app/retrieve_media"
 
 module Whats
   module Actions
