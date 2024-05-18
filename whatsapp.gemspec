@@ -20,7 +20,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "net-http",                           "~> 0.4"
-
+  spec.add_dependency "multipart-post",                     "~> 2.4"
+  spec.add_dependency "mime-types",                         "~> 3.3"
+  
   spec.add_development_dependency "bundler",                   "~> 2.4"
   spec.add_development_dependency "pry-byebug",                "~> 3.6"
   spec.add_development_dependency "rake",                      "~> 10.0"
