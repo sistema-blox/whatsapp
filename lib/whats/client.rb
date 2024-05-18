@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 # en_string_literal: true
 
+require 'net/http/post/multipart'
+require 'mime/types'
+
 module Whats
   class Client
     attr_reader :base_path, :content_type, :full_path, :http_client, :payload, :token, :token_type
@@ -75,24 +78,29 @@ module Whats
     end
 
     def send_request(method)
-      send("send_#{method}_request")
+      http_client.request(content_type == "application/json" ? build_default_request(method) : build_form_data_request)
     end
 
-    def send_post_request
-      request = Net::HTTP::Post.new(full_path, headers)
+    def build_default_request(method)
+      request = Net::HTTP.const_get(method.to_s.capitalize).new(full_path, headers)
       request.body = formatted_body if payload
 
-      http_client.request(request)
+      request
     end
 
-    def send_get_request
-      request = Net::HTTP::Get.new(full_path, headers)
-      http_client.request(request)
-    end
+    def build_form_data_request
+      params = payload.each_with_object({}) do |(k, v), param|
+        if v.is_a?(File)
+          mime_type = MIME::Types.type_for(v.path).first.to_s
+          filename = File.basename(v.path)
 
-    def send_delete_request
-      request = Net::HTTP::Delete.new(full_path, headers)
-      http_client.request(request)
+          param[k] = UploadIO.new(v, mime_type, filename)
+        else
+          param[k] = v
+        end
+      end
+
+      Net::HTTP::Post::Multipart.new(full_path, params, headers)
     end
 
     def formatted_body
