@@ -10,6 +10,8 @@ module Whats
         recipient_type: 'individual'
       }.freeze
 
+      PAYLOAD_TYPES = %w[text interactive template document].freeze
+
       def initialize(client, wa_id, phone_id, type = 'text', body)
         @client = client
         @wa_id  = wa_id
@@ -29,30 +31,45 @@ module Whats
       attr_reader :client, :wa_id, :type, :body
 
       def payload
-        case type
-        when 'text'
-          COMMON_PAYLOAD.merge(
-            to: wa_id,
-            type: type,
-            text: {
-              body: body
-            }
-          )
-        when 'interactive'
-          COMMON_PAYLOAD.merge(
-            to: wa_id,
-            type: type,
-            interactive: body
-          )
-        when 'template'
-          COMMON_PAYLOAD.merge(
-            to: wa_id,
-            type: type,
-            **template_payload
-          )
-        else
-          raise Whats::Errors::RequestError.new("WhatsApp error: type should be 'text' or 'interactive'")
+        unless PAYLOAD_TYPES.include?(type)
+          raise Whats::Errors::RequestError.new("WhatsApp error: type not supported")
         end
+
+        send("#{type}_payload")
+      end
+
+      def text_payload
+        COMMON_PAYLOAD.merge(
+          to: wa_id,
+          type:,
+          text: {
+            body:
+          }
+        )
+      end
+
+      def interactive_payload
+        COMMON_PAYLOAD.merge(
+          to: wa_id,
+          type:,
+          interactive: body
+        )
+      end
+
+      def template_payload
+        COMMON_PAYLOAD.merge(
+          to: wa_id,
+          type:,
+          **template_payload
+        )
+      end
+
+      def document_payload
+        COMMON_PAYLOAD.merge(
+          to: wa_id,
+          type:,
+          document: body
+        ) 
       end
 
       def template_payload

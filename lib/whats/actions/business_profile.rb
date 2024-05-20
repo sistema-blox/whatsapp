@@ -1,5 +1,5 @@
 require "whats/services/app/upload_session"
-require "whats/services/app/upload"
+require "whats/services/app/retrieve_media"
 
 module Whats
   module Actions
@@ -46,7 +46,7 @@ module Whats
 
         raise "Upload session response does not contain an id." if us_response["id"].nil?
 
-        upload_response = App::Upload.call(client: client, file: File.binread(file_path), upload_id: us_response["id"], content_type: file_type)
+        upload_response = App::RetrieveMedia.call(client: client, file: File.binread(file_path), upload_id: us_response["id"], content_type: file_type)
 
         payload.delete(:file)
 

@@ -55,8 +55,8 @@ module Whats
       ).call
     end
 
-    def upload_media(file, type)
-      Actions::UploadMedia.new(client, phone_id, file, type).call
+    def upload_media(file_path, type)
+      Actions::UploadMedia.new(client, phone_id, file_path, type).call
     end
 
     def get_media(media_id)

@@ -1,13 +1,13 @@
 module Whats
   module Actions
     class UploadMedia
-      attr_reader :client, :file, :type, :path
+      attr_reader :client, :file_path, :type, :path
 
       ENDPOINT = "/v18.0/%{phone_number_id}/media"
 
-      def initialize(client, phone_number_id, file, type)
+      def initialize(client, phone_number_id, file_path, type)
         @client = client
-        @file = file
+        @file_path = file_path
         @type = type
         @path = URI::DEFAULT_PARSER.escape(ENDPOINT % { phone_number_id: phone_number_id })
       end
@@ -20,7 +20,7 @@ module Whats
 
       def payload
         {
-          file:,
+          file: File.open(file_path),
           type:,
           messaging_product: "whatsapp"
         }

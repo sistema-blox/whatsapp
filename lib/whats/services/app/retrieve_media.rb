@@ -1,5 +1,5 @@
 module App
-  class Upload
+  class RetrieveMedia
     attr_reader :file, :client, :path, :content_type
 
    ENDPOINT = "/v18.0/%{upload_id}"

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe App::Upload do
+RSpec.describe App::RetrieveMedia do
   let(:client) { instance_double("Whats::Client") }
   let(:file) { 'file_content' }
   let(:upload_id) { '12345' }
@@ -12,7 +12,7 @@ RSpec.describe App::Upload do
       expect(upload.client).to eq(client)
       expect(upload.file).to eq(file)
       expect(upload.content_type).to eq(content_type)
-      expect(upload.path).to eq(App::Upload::ENDPOINT % { upload_id: upload_id })
+      expect(upload.path).to eq(App::RetrieveMedia::ENDPOINT % { upload_id: upload_id })
     end
   end
 
