@@ -124,8 +124,6 @@ module Whats
 
       if content_type.include?('application/json')
         parse_json_response(response)
-      elsif content_type.include?('audio/') || content_type.include?('video/') || content_type.include?('image/')
-        download_media(response, content_type)
       else
         response.body
       end
@@ -135,30 +133,6 @@ module Whats
       JSON.parse(response.body)
     rescue JSON::ParserError => e
       raise Whats::Errors::ParseError, "JSON parsing error: #{e.message}"
-    end
-
-    def download_media(response, content_type)
-      extension = determine_file_extension(content_type)
-      filename = "media.#{extension}"
-
-      File.open(filename, "wb") { |file| file.write(response.body) }
-
-      filename
-    end
-
-    def determine_file_extension(content_type)
-      # This method should map content types to file extensions
-      # For simplicity, here's a basic mapping for common types
-      case content_type
-      when /audio\/(\w+)/
-        $1
-      when /video\/(\w+)/
-        $1
-      when /image\/(\w+)/
-        $1
-      else
-        'bin' # default binary extension
-      end
     end
   end
 end
