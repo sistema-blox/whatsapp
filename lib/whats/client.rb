@@ -23,6 +23,7 @@ module Whats
       setup_request_details(path, payload, content_type)
 
       response = send_request(method)
+
       handle_response(response)
     end
 

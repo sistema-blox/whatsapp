@@ -4,7 +4,7 @@ require "whats/services/app/retrieve_media"
 module Whats
   module Actions
     class BusinessProfile
-      attr_reader :client, :from_phone_number_id, :path, :payload, :action
+      attr_reader :client, :from_phone_number_id, :payload, :action
 
       ENDPOINT = "/v18.0/%{from_phone_number_id}/whatsapp_business_profile"
       ACCEPTED_PARAMS = [:websites, :address, :description, :email, :about, :profile_picture_handle]
@@ -15,7 +15,6 @@ module Whats
       def initialize(client:, from_phone_number_id:, payload: nil, action: :update)
         @client = client
         @from_phone_number_id = from_phone_number_id
-        @path = URI::DEFAULT_PARSER.escape(ENDPOINT % { from_phone_number_id: from_phone_number_id })
         @payload = generate_payload(payload) if action == :update
         @action = action
       end
@@ -29,7 +28,7 @@ module Whats
       private
 
       def path
-
+        URI::DEFAULT_PARSER.escape(ENDPOINT % { from_phone_number_id: from_phone_number_id })
       end
 
       def get_business_profile
