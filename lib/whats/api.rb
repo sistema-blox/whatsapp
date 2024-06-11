@@ -49,9 +49,17 @@ module Whats
 
     def update_business_profile(payload)
       Actions::BusinessProfile.new(
-        client: client,
+        client:,
         from_phone_number_id: phone_id,
-        payload: payload
+        payload:
+      ).call
+    end
+
+    def get_business_profile
+      Actions::BusinessProfile.new(
+        client:,
+        from_phone_number_id: phone_id,
+        action: :get
       ).call
     end
 
