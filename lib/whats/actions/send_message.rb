@@ -60,8 +60,9 @@ module Whats
         COMMON_PAYLOAD.merge(
           to: wa_id,
           type:,
-          **template_payload
-        )
+          template: body[:template],
+          components: body[:components]
+        ).compact
       end
 
       def document_payload
@@ -70,13 +71,6 @@ module Whats
           type:,
           document: body
         ) 
-      end
-
-      def template_payload
-        {
-          template: body[:template],
-          components: body[:components] 
-        }.compact
       end
     end
   end
