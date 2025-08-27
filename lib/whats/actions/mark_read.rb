@@ -3,7 +3,7 @@
 module Whats
   module Actions
     class MarkRead
-      ENDPOINT = "/v17.0/%{phone_id}/messages"
+      ENDPOINT = "/v23.0/%{phone_id}/messages"
 
       def initialize(client, message_id, phone_id)
         @client = client
