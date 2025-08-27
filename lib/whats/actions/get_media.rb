@@ -3,7 +3,7 @@ module Whats
     class GetMedia
       attr_reader :client, :path
 
-      ENDPOINT = "/v18.0/%{media_id}"
+      ENDPOINT = "/v23.0/%{media_id}"
 
       def initialize(client, media_id)
         @client = client

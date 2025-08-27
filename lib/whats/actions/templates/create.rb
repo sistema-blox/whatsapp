@@ -11,7 +11,7 @@ module Whats
         attr_reader :client, :path
         attr_accessor :name, :category, :allow_category_change, :language, :components
 
-        ENDPOINT = "/v17.0/%{waba_id}/message_templates"
+        ENDPOINT = "/v23.0/%{waba_id}/message_templates"
         AVAILABLE_CATEGORIES = %w[AUTHENTICATION MARKETING UTILITY]
         AVAILABLE_LANGUAGE_CODES = %w[
           af sq ar az bn bg ca zh_CN zh_HK zh_TW hr cs da nl en en_GB en_US et fil fi fr ka de el gu ha he hi hu id ga it

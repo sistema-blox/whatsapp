@@ -2,7 +2,7 @@ module App
   class UploadSession
     attr_reader :client, :file_length, :file_type, :file_name
 
-    ENDPOINT = "/v18.0/app/uploads/?file_length=%{file_length}&file_type=%{file_type}&file_name=%{file_name}"
+    ENDPOINT = "/v23.0/app/uploads/?file_length=%{file_length}&file_type=%{file_type}&file_name=%{file_name}"
     ACCEPTED_FILE_TYPES = ["image", "jpeg", "jpg", "png"]
 
     def initialize(client, file_length, file_type, file_name)

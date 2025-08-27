@@ -3,7 +3,7 @@
 module Whats
   module Actions
     class SendMessage
-      ENDPOINT = "/v17.0/%{phone_id}/messages"
+      ENDPOINT = "/v23.0/%{phone_id}/messages"
 
       COMMON_PAYLOAD = {
         messaging_product: 'whatsapp',

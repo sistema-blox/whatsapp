@@ -2,7 +2,7 @@ module App
   class RetrieveMedia
     attr_reader :file, :client, :path, :content_type
 
-   ENDPOINT = "/v18.0/%{upload_id}"
+   ENDPOINT = "/v23.0/%{upload_id}"
 
     def initialize(client, file, upload_id, content_type)
       @client = client

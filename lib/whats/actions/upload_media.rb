@@ -3,7 +3,7 @@ module Whats
     class UploadMedia
       attr_reader :client, :file_path, :type, :path
 
-      ENDPOINT = "/v18.0/%{phone_number_id}/media"
+      ENDPOINT = "/v23.0/%{phone_number_id}/media"
 
       def initialize(client, phone_number_id, file_path, type)
         @client = client

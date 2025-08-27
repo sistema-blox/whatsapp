@@ -6,7 +6,7 @@ module Whats
 
         attr_reader :client, :template_name
 
-        ENDPOINT = "/v17.0/%{waba_id}/message_templates?name=%{template_name}"
+        ENDPOINT = "/v23.0/%{waba_id}/message_templates?name=%{template_name}"
 
         validates :template_name, presence: true
 

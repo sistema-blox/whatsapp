@@ -11,7 +11,7 @@ module Whats
         attr_accessor :category, :components
         attr_reader :client, :path
 
-        ENDPOINT = "/v17.0/%{template_id}"
+        ENDPOINT = "/v23.0/%{template_id}"
 
         validates :category, inclusion: { in: Create::AVAILABLE_CATEGORIES }, allow_nil: true
         validates :components, length: { minimum: 1 }, allow_nil: true
